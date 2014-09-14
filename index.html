@@ -61,7 +61,10 @@
                 </li>
                 <li class='tab'>
                   <a href="#contact"><i class="fa fa-envelope"></i><span> 联系我们</span></a>
-                </li>
+                  </li>
+                <li class='tab'>
+                  <a href="#address"><i class="fa fa-map-maker"></i><span> 前往球场</span></a>
+                  </li>
             </ul>
           <!-- End Tab List -->
             <div id="tab-data-wrap">
@@ -426,7 +429,27 @@
                        
                     </section>
                 </div>
-              <!-- End Contact Data -->
+                <!-- End Contact Data -->
+                <!-- Start address Data -->
+                <style type="text/css">
+                    #allmap{width:60%;height:350px;}
+                </style>
+
+                <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=9E0pWt4wnhhC5VHr1GInrSpX"></script>
+                
+                <div id="address">
+                    <section class="clearfix">
+                        <div class="g1">
+                            <div class="main-links sidebar">
+								<a href="images/map.jpg">
+									<img src = "images/map.jpg"> 
+								</a>                             
+                            </div>
+                        </div>
+                    <div id="allmap"></div>
+                    </section>
+                </div>
+                <!-- End address Data-->
             </div>
         </div>
         <!-- End Tab Container -->
@@ -438,7 +461,30 @@
     </div><!-- #main -->
 </div><!-- #main-container -->
 
-
-
 </body>
 </html>
+
+<script type="text/javascript">
+    <!-- 百度地图API功能-->  
+    map = new BMap.Map("allmap");
+    map.centerAndZoom(new BMap.Point(116.417854,39.921988), 15);
+    var data_info = [[116.417854,39.921988,"地址：北京市东城区王府井大街88号乐天银泰百货八层"],
+                     [116.406605,39.921585,"地址：北京市东城区东华门大街"],
+                     [116.412222,39.912345,"地址：北京市东城区正义路甲5号"]];
+    var opts = {width : 150,     <!-- 信息窗口宽度-->
+                height: 80,     <!-- 信息窗口高度-->
+                title : "信息窗口",<!-- 信息窗口标题-->
+                enableMessage:true}; <!--设置允许信息窗发送短息-->
+    for(var i=0;i<data_info.length;i++){
+         var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  <!-- 创建标注-->
+         var content = data_info[i][2];
+         map.addOverlay(marker);                               <!-- 将标注添加到地图中-->
+         marker.addEventListener("click",openInfo.bind(null,content));
+     }
+    function openInfo(content,e){
+         var p = e.target;
+         var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+         var infoWindow = new BMap.InfoWindow(content,opts);  <!-- 创建信息窗口对象--> 
+         map.openInfoWindow(infoWindow,point);            <!--开启信息窗口-->
+    }
+</script>
